@@ -1,12 +1,16 @@
 from django.shortcuts import render
+from Site.forms import ClienteForm
 from Site.models import Departamento, Produto
 
 
 # Create your views here.
 def index(request):
     departamentos = Departamento.objects.all()
+    produtos_em_destaque = Produto.objects.filter(destaque = True)
+
     context = {
-        "departamento": departamentos 
+        "departamento": departamentos, 
+        'produtos': produtos_em_destaque
     }
 
     return render(request, 'index.html',context)
@@ -33,12 +37,16 @@ def produto_lista_por_id(request,id):
     }
     return render(request, 'produtos.html',context)
 
-def produto_detalhe(request):
+def produto_detalhe(request,id):
     departamentos = Departamento.objects.all()
+    produto = Produto.objects.get(id = id)
+    produtos_relacionados = Produto.objects.filter(departamento_id = produto.departamento.id)[:4]
     context = {
-        "departamento": departamentos 
+        "departamento": departamentos,
+        'produto' : produto,
+        'produtos_relacionados' : produtos_relacionados
     }
-    return render(request, 'produto_detalhes.html',context)
+    return render(request, 'produto_detalhes.html', context)
 
 def institucional(request):
     departamentos = Departamento.objects.all()
@@ -47,6 +55,23 @@ def institucional(request):
     }
     return render(request, 'empresa.html',context)
 
+def cadastro(request):
+    departamentos = Departamento.objects.all()
+
+    if request.method == "POST":
+        formulario = ClienteForm(request.POST)
+        if formulario.is_valid():
+            cliente = formulario.save()
+            formulario = ClienteForm()
+    else:
+        formulario = ClienteForm()
+
+    context = {
+        "departamento": departamentos,
+        'form_cliente': formulario
+    }
+    return render(request, 'cadastro.html',context)
+
 def contato(request):
     departamentos = Departamento.objects.all()
     context = {
@@ -54,9 +79,3 @@ def contato(request):
     }
     return render(request, 'contato.html',context)
 
-def cadastro(request):
-    departamentos = Departamento.objects.all()
-    context = {
-        "departamento": departamentos 
-    }
-    return render(request, 'cadastro.html',context)
