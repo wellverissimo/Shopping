@@ -11,15 +11,15 @@ class ClienteForm(forms.ModelForm):
             'data_nascimento': forms.TextInput(attrs={'class':'date'}),
 
             }
-class ContatoForm(forms.form):
+class ContatoForm(forms.Form):
     nome = forms.CharField()
     email = forms.EmailField()
     telefone = forms.CharField()
     assunto = forms.CharField()
     mensagem = forms.CharField()
 
-    class Meta
-    widgets = {
+    class Meta:
+        widgets = {
         'telefone': forms.TextInput(attrs={'class':'phone_with_ddd'}),
         'mensagem': forms.Textarea,
-    }
+        }

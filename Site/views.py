@@ -95,8 +95,7 @@ def contato(request):
             mensagem = 'E-mail enviado com sucesso!'
         except:
             mensagem = 'Erro ao enviar e-mail!'
-    else:
-        formulario = ContatoForm()
+    formulario = ContatoForm()
 
     context = {
         'departamentos': departamentos,

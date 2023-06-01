@@ -27,7 +27,7 @@ Contato
                 <form action="{% url 'contato'%}" method="POST">
                     {% csrf_token %}
                     <div class="col-md-6 offset-md-3">
-                        {{ form_cliente|crispy }}
+                        {{ form_contato|crispy }}
                         <input type="submit" value="Enviar"  class="btn btn-secondary" >
                     </div>
 
